@@ -1,4 +1,4 @@
-# PageSpeed Insights Bulk Testing Tool
+# PageSpeed Insights Testing Tool
 
 A Python tool for running Google PageSpeed Insights tests on multiple URLs and generating detailed performance reports.
 
@@ -10,6 +10,8 @@ A Python tool for running Google PageSpeed Insights tests on multiple URLs and g
 - Raw JSON data export
 - Formatted performance summary
 - Console output with real-time results
+- Customizable output filenames
+- Environment variable support for API key
 
 ## 🚀 Installation
 
@@ -51,56 +53,88 @@ A Python tool for running Google PageSpeed Insights tests on multiple URLs and g
         ```
 
 2. Run the script:
-    ```bash
-    python psi_analyzer.py
-    ```
+    - With default output filenames:
+        ```bash
+        python psi_analyzer.py input_urls.txt
+        ```
+    
+    - With custom output filenames:
+        ```bash
+        python psi_analyzer.py input_urls.txt --raw-output custom_raw.csv --summary-output custom_summary.csv
+        ```
+    
+    - Get help on usage:
+        ```bash
+        python psi_analyzer.py --help
+        ```
 
 ## 📊 Output Files
 
-### PSI_raw_metrics.csv
-Contains complete API responses for each URL:
-```csv
-URL,Raw JSON
-https://www.example.com,{complete JSON response}
-```
+### Default Output Files
+- `psi_raw_metrics.csv`: Complete API responses
+- `psi_performance_summary.csv`: Tabulated metrics
 
-### PSI_performance_summary.csv
-Contains tabulated performance metrics:
-```csv
-URL,timestamp,performance_score,first_contentful_paint,speed_index
-https://www.example.com,2024-01-20T12:34:56.789Z,95.2,1.2s,2.1s
-```
+### Custom Output Files
+Specify custom filenames using command-line arguments:
+    ```bash
+    --raw-output FILENAME.csv
+    --summary-output FILENAME.csv
+    ```
+
+### File Contents Example
+
+1. Raw Metrics CSV:
+    ```csv
+    URL,Raw JSON
+    https://www.example.com,{complete JSON response}
+    ```
+
+2. Performance Summary CSV:
+    ```csv
+    URL,timestamp,performance_score,first_contentful_paint,speed_index
+    https://www.example.com,2024-01-20T12:34:56.789Z,95.2,1.2s,2.1s
+    ```
 
 ## 📈 Performance Metrics
 
-Metric	Description
-Performance Score	Overall score (0-100)
-First Contentful Paint	Time until first content appears
-Speed Index	How quickly content is visually displayed
-Largest Contentful Paint	Largest content element load time
-Time to Interactive	When page becomes fully interactive
-Total Blocking Time	Sum of blocking time periods
-Cumulative Layout Shift	Visual stability measure
+| Metric | Description |
+|--------|-------------|
+| Performance Score | Overall score (0-100) |
+| First Contentful Paint | Time until first content appears |
+| Speed Index | How quickly content is visually displayed |
+| Largest Contentful Paint | Largest content element load time |
+| Time to Interactive | When page becomes fully interactive |
+| Total Blocking Time | Sum of blocking time periods |
+| Cumulative Layout Shift | Visual stability measure |
+
+## 🛠️ Command Line Arguments
+
+| Argument | Description | Default |
+|----------|-------------|---------|
+| input_file | Input file path (required) | None |
+| --raw-output | Raw metrics output filename | psi_raw_metrics.csv |
+| --summary-output | Summary output filename | psi_performance_summary.csv |
 
 ## 📝 License
+
 MIT License
 
-### 🤝 Contributing
+## 🤝 Contributing
 
 1. Fork the repository
-2. Create your feature branch
-```bash
-git checkout -b feature/AmazingFeature
-```
+2. Create your feature branch:
+    ```bash
+    git checkout -b feature/AmazingFeature
+    ```
 
-3. Commit your changes
-```bash
-git commit -m 'Add some AmazingFeature'
-```
+3. Commit your changes:
+    ```bash
+    git commit -m 'Add some AmazingFeature'
+    ```
 
-4. Push to the branch
-```bash
-git push origin feature/AmazingFeature
-```
+4. Push to the branch:
+    ```bash
+    git push origin feature/AmazingFeature
+    ```
 
 5. Open a Pull Request

@@ -6,14 +6,13 @@ from datetime import datetime
 from pathlib import Path
 from dotenv import load_dotenv
 import os
-
+import argparse
 
 # Load environment variables
 load_dotenv()
 
-
 class PageSpeedInsights:
-    def __init__(self, api_key=None):
+    def __init__(self):
         self.api_key = os.getenv('PSI_API_KEY')
         self.base_url = "https://www.googleapis.com/pagespeedonline/v5/runPagespeed"
         
@@ -60,7 +59,7 @@ class PageSpeedInsights:
         }
         return metrics
 
-    def save_raw_results(self, results, filename='PSI_raw_metrics.csv'):
+    def save_raw_results(self, results, filename='psi_raw_metrics.csv'):
         if not results:
             return
 
@@ -70,7 +69,7 @@ class PageSpeedInsights:
             for url, result in results.items():
                 writer.writerow([url, json.dumps(result)])
 
-    def save_summary_results(self, metrics_list, filename='PSI_performance_summary.csv'):
+    def save_summary_results(self, metrics_list, filename='psi_performance_summary.csv'):
         if not metrics_list:
             return
 
@@ -94,12 +93,27 @@ class PageSpeedInsights:
         print(f"Cumulative Layout Shift: {metrics['cumulative_layout_shift']}")
         print("="*50 + "\n")
 
+def parse_arguments():
+    parser = argparse.ArgumentParser(description='Run PageSpeed Insights analysis on multiple URLs')
+    parser.add_argument('input_file', 
+                      help='Input file containing URLs (txt or csv)')
+    parser.add_argument('--raw-output', 
+                      default='psi_raw_metrics.csv',
+                      help='Output file for raw metrics (default: psi_raw_metrics.csv)')
+    parser.add_argument('--summary-output', 
+                      default='psi_performance_summary.csv',
+                      help='Output file for performance summary (default: psi_performance_summary.csv)')
+    return parser.parse_args()
+
 def main():
+    # Parse command line arguments
+    args = parse_arguments()
+    
     # Initialize PSI with API key from environment variable
     psi = PageSpeedInsights()
     
-    # Load URLs from file
-    urls = psi.load_urls('input_urls.txt')  # or 'input_urls.csv'
+    # Load URLs from specified input file
+    urls = psi.load_urls(args.input_file)
     
     raw_results = {}
     metrics_list = []
@@ -115,11 +129,11 @@ def main():
                 psi.print_summary(metrics)
         time.sleep(1)  # Rate limiting
     
-    # Save results
-    psi.save_raw_results(raw_results)
-    psi.save_summary_results(metrics_list)
+    # Save results to specified output files
+    psi.save_raw_results(raw_results, args.raw_output)
+    psi.save_summary_results(metrics_list, args.summary_output)
     
-    print("\nAnalysis complete! Results saved to PSI_raw_metrics.csv and PSI_performance_summary.csv")
+    print(f"\nAnalysis complete! Results saved to {args.raw_output} and {args.summary_output}")
 
 if __name__ == "__main__":
     main()
