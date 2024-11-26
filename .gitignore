@@ -33,5 +33,4 @@ env/
 *.swo
 
 # Project specific
-PSI_raw_metrics.csv
-PSI_performance_summary.csv
+*.csv
