@@ -34,3 +34,8 @@ env/
 
 # Project specific
 *.csv
+*.txt
+!requirements.txt
+
+# Logs
+*.log

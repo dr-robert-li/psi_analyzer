@@ -1,4 +1,4 @@
-# PageSpeed Insights Testing Tool
+# PageSpeed Insights Bulk Testing Tool
 
 A Python tool for running Google PageSpeed Insights tests on multiple URLs and generating detailed performance reports.
 
@@ -12,6 +12,10 @@ A Python tool for running Google PageSpeed Insights tests on multiple URLs and g
 - Console output with real-time results
 - Customizable output filenames
 - Environment variable support for API key
+- Desktop/Mobile strategy selection
+- Real-time data persistence
+- Comprehensive error handling
+- Detailed success/failure statistics
 
 ## 🚀 Installation
 
@@ -53,9 +57,14 @@ A Python tool for running Google PageSpeed Insights tests on multiple URLs and g
         ```
 
 2. Run the script:
-    - With default output filenames:
+    - With default settings (desktop strategy):
         ```bash
         python psi_analyzer.py input_urls.txt
+        ```
+    
+    - With mobile strategy:
+        ```bash
+        python psi_analyzer.py input_urls.txt --strategy mobile
         ```
     
     - With custom output filenames:
@@ -70,29 +79,24 @@ A Python tool for running Google PageSpeed Insights tests on multiple URLs and g
 
 ## 📊 Output Files
 
-### Default Output Files
-- `psi_raw_metrics.csv`: Complete API responses
-- `psi_performance_summary.csv`: Tabulated metrics
+### Real-time Data Persistence
+Results are saved immediately after each test:
+- Preserves progress if script stops unexpectedly
+- Reduces memory usage
+- Ideal for long-running tests
 
-### Custom Output Files
-Specify custom filenames using command-line arguments:
-    ```bash
-    --raw-output FILENAME.csv
-    --summary-output FILENAME.csv
-    ```
-
-### File Contents Example
+### File Structure
 
 1. Raw Metrics CSV:
     ```csv
-    URL,Raw JSON
-    https://www.example.com,{complete JSON response}
+    URL,Strategy,Raw JSON
+    https://www.example.com,desktop,{complete JSON response}
     ```
 
 2. Performance Summary CSV:
     ```csv
-    URL,timestamp,performance_score,first_contentful_paint,speed_index
-    https://www.example.com,2024-01-20T12:34:56.789Z,95.2,1.2s,2.1s
+    URL,timestamp,strategy,performance_score,first_contentful_paint,speed_index
+    https://www.example.com,2024-01-20T12:34:56.789Z,desktop,95.2,1.2s,2.1s
     ```
 
 ## 📈 Performance Metrics
@@ -114,6 +118,16 @@ Specify custom filenames using command-line arguments:
 | input_file | Input file path (required) | None |
 | --raw-output | Raw metrics output filename | psi_raw_metrics.csv |
 | --summary-output | Summary output filename | psi_performance_summary.csv |
+| --strategy | Analysis strategy (desktop/mobile) | desktop |
+
+## 📊 Console Output
+
+The script provides detailed console feedback:
+- Progress tracking (X/Y URLs completed)
+- Real-time test results
+- Error messages for failed tests
+- Final summary with success/failure statistics
+- Visual indicators (✅/❌) for quick status recognition
 
 ## 📝 License
 
